@@ -17,7 +17,8 @@ class UsersController < ApplicationController
    #有効なユーザーだけを表示するコードのテンプレート
   def show
     @user = User.find(params[:id])
-    redirect_to root_url and return unless FILL_IN
+    @microposts = @user.microposts.paginate(page: params[:page])
+    
   end
 
   def new
@@ -60,17 +61,7 @@ class UsersController < ApplicationController
       :password_confirmation)
   end
   
-  # beforeアクション
 
-    # ログイン済みユーザーかどうか確認
-  
-  def logged_in_user
-      unless logged_in?
-       store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-  end
   
 # 正しいユーザーかどうか確認
 #別のユーザーのプロフィールを編集しようとしたらリダイレクトさせたいので、
